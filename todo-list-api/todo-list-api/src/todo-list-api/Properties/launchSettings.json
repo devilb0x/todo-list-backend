@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "todo-list-api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:57408;http://localhost:57409"
+    }
+  }
+}
