@@ -2,4 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/todo-list-api/todo-list-api/src/todo-list-api/obj/Debug/net6.0
+/todo-list-api/todo-list-api/src/todo-list-api/obj/*
+/todo-list-api/todo-list-api/src/todo-list-api/bin/*
+/todo-list-api/.vs/*
