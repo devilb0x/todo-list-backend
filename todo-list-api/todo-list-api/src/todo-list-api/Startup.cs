@@ -15,21 +15,21 @@ namespace ToDoList
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // get connection string from config and connect
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
-        var connectionString = Configuration.GetConnectionString("DefaultConnection");
-
-        if (string.IsNullOrEmpty(connectionString))
+            if (string.IsNullOrEmpty(connectionString))
             {
                 throw new InvalidOperationException("DefaultConnection setting not defined in appsettings.json");
             }
 
-            services.AddDbContext<TodoDbContext>(x => x.UseSqlServer(connectionString,
+            services.AddDbContext<ToDoDbContext>(x => x.UseSqlServer(connectionString,
                 builder =>
                 {
                     builder.CommandTimeout(800);
                     builder.EnableRetryOnFailure(
                         maxRetryCount: 5,
-                        maxRetryDelay: TimeSpan.FromSeconds(60),
+                        maxRetryDelay: TimeSpan.FromSeconds(5),
                         errorNumbersToAdd: null);
 
                 }));
@@ -44,6 +44,23 @@ namespace ToDoList
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(options =>
+            {
+                var origins = new List<string>
+                {
+                    "https://todo.thisnameischeapbecauseitsverylong.com",
+                    "http://localhost:4200",
+                    "https://localhost:4200"
+                };
+
+                options
+                .WithOrigins(origins.ToArray())
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+
+            });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -55,7 +72,7 @@ namespace ToDoList
                 endpoints.MapControllers();
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Welcome to running ASP.NET Core on AWS Lambda");
+                    await context.Response.WriteAsync("Hello from To Do List Web API Lambda");
                 });
             });
         }
